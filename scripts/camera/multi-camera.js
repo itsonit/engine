@@ -137,11 +137,17 @@ class MultiCamera extends BaseCamera {
     crouchSpeed = 1;
 
     /**
+     * @attribute
+     * @type {number}
+     */
+    angleMax = 90;
+
+    /**
      * @param {object} args - The script arguments.
      */
     constructor(args) {
         super(args);
-        const { pinchSpeed, wheelSpeed, zoomMin, zoomMax, moveSpeed, sprintSpeed, crouchSpeed } = args.attributes;
+        const { pinchSpeed, wheelSpeed, zoomMin, zoomMax, moveSpeed, sprintSpeed, crouchSpeed, angleMax } = args.attributes;
 
         this.pinchSpeed = pinchSpeed ?? this.pinchSpeed;
         this.wheelSpeed = wheelSpeed ?? this.wheelSpeed;
@@ -150,6 +156,7 @@ class MultiCamera extends BaseCamera {
         this.moveSpeed = moveSpeed ?? this.moveSpeed;
         this.sprintSpeed = sprintSpeed ?? this.sprintSpeed;
         this.crouchSpeed = crouchSpeed ?? this.crouchSpeed;
+        this.angleMax = angleMax ?? this.angleMax;
 
         this._onWheel = this._onWheel.bind(this);
         this._onKeyDown = this._onKeyDown.bind(this);
@@ -500,6 +507,12 @@ class MultiCamera extends BaseCamera {
         if (!this._flying) {
             this._cameraDist = math.lerp(this._cameraDist, this._zoomDist, 1 - Math.pow(this.moveDamping, dt * 1000));
             this._camera.entity.setLocalPosition(0, 0, this._cameraDist);
+        }
+
+        // Ensure the camera respects the angleMax
+        const x = this._dir.x;
+        if (x > this.angleMax) {
+            this._dir.x = this.angleMax;
         }
 
         this._move(dt);
