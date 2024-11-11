@@ -187,11 +187,11 @@ class MultiCamera extends BaseCamera {
             this._panning = true;
         }
         if (event.button === 2) {
-            this._zoomDist = this._cameraDist;
+            /*this._zoomDist = this._cameraDist;
             this._origin.copy(this._camera.entity.getPosition());
             this._position.copy(this._origin);
             this._camera.entity.setLocalPosition(0, 0, 0);
-            this._flying = true;
+            this._flying = true;*/
         }
     }
 
